@@ -1,40 +1,44 @@
 require "pry"
 
 class Knapsack
+  attr_reader :sums, :items, :target
   def initialize(filename)
-    @target = 0
-    @items = {}
-    @sums = {}
     get_values(filename)
   end
 
+  def sums
+    @sums ||= get_sums
+  end
+
   def combinations
-    @combinations ||= possible_combinations.select { |e| sum(e) == @target }
+    @combinations ||= sums.keys.select { |combo| sums[combo] == @target }
   end
 
   def print_combinations
-    puts "No possible combinations add up to #{@target}" if combinations == []
+    puts "No possible combinations add up to #{@target}" if combinations == {}
     combinations.each_with_index do |combo, i|
       puts "Combination ##{i + 1}:"
       count_items(combo).each { |item, count| puts "  #{count} #{item}" }
     end
-
   end
 
-  def possible_combinations
+  def get_sums
     values = @items.values
     min_value = values.min
     max_count = @target / min_value
     min_count = values.include?(@target) ? 1 : 2
 
+    sums = {}
+
     (min_count..max_count).each do |n|
       @items.keys.repeated_combination(n).each do |c|
-        @sums[c[0..-2]] ? @sums[c] = @sums[c[0..-2]] + @items[c.last] : @sums[c] = sum(c)
+        sums[c[0..-2]] ? sums[c] = sums[c[0..-2]] + @items[c.last] : sums[c] = sum(c)
       end
     end
 
-    @sums
+    sums
   end
+
   private
 
   # def symsnakeify(str)
@@ -63,6 +67,8 @@ class Knapsack
   end
 
   def get_values(filename)
+    @target = 0
+    @items = {}
     File.open(filename, 'r') do |file|
       file.readlines.each_with_index do |line, i|
         i == 0 ? set_target(line) : add_item(line)
@@ -71,9 +77,8 @@ class Knapsack
   end
 
 
-  def count_items(combo)
+  def count_items(item_names)
     count = {}
-    item_names = combo.map { |item| item.first }
     unique_items = item_names.uniq
     unique_items.each { |item| count[item] = item_names.count(item) }
     count
@@ -82,13 +87,8 @@ class Knapsack
 end
 
 k = Knapsack.new('test_menus/menu1.txt')
-# p k.combinations.length
-# k.combinations
-# k.combinations
-# k.combinations
-# k.combinations
-# p k.combinations.first
-# p k.combinations.last
-# k.print_combinations
-# binding.pry
-p k.possible_combinations
+# p k.sums
+# p k.target
+p k.combinations.length
+p k.combinations
+k.print_combinations
