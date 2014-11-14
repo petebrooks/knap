@@ -4,6 +4,7 @@ class Knapsack
   def initialize(filename)
     @target = 0
     @items = {}
+    @sums = {}
     get_values(filename)
   end
 
@@ -20,6 +21,20 @@ class Knapsack
 
   end
 
+  def possible_combinations
+    values = @items.values
+    min_value = values.min
+    max_count = @target / min_value
+    min_count = values.include?(@target) ? 1 : 2
+
+    (min_count..max_count).each do |n|
+      @items.keys.repeated_combination(n).each do |c|
+        @sums[c[0..-2]] ? @sums[c] = @sums[c[0..-2]] + @items[c.last] : @sums[c] = sum(c)
+      end
+    end
+
+    @sums
+  end
   private
 
   # def symsnakeify(str)
@@ -44,7 +59,7 @@ class Knapsack
   end
 
   def sum(a)
-    a.inject(0) { |sum, item| sum + item.last }
+    a.inject(0) { |sum, item| sum + @items[item] }
   end
 
   def get_values(filename)
@@ -55,20 +70,6 @@ class Knapsack
     end
   end
 
-  def possible_combinations
-    values = @items.values
-    min_value = values.min
-    max_count = @target / min_value
-    min_count = values.include?(@target) ? 1 : 2
-
-    combos = []
-
-    (min_count..max_count).each do |n|
-      @items.to_a.repeated_combination(n).each { |a| combos << a }
-    end
-
-    combos
-  end
 
   def count_items(combo)
     count = {}
@@ -80,13 +81,14 @@ class Knapsack
 
 end
 
-k = Knapsack.new('test_menus/menu3.txt')
-p k.combinations.length
-k.combinations
-k.combinations
-k.combinations
-k.combinations
+k = Knapsack.new('test_menus/menu1.txt')
+# p k.combinations.length
+# k.combinations
+# k.combinations
+# k.combinations
+# k.combinations
 # p k.combinations.first
 # p k.combinations.last
 # k.print_combinations
 # binding.pry
+p k.possible_combinations
