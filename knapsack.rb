@@ -14,12 +14,15 @@ class Knapsack
     @combinations ||= sums.keys.select { |combo| sums[combo] == @target }
   end
 
-  def print_combinations
-    puts "No possible combinations add up to #{@target}" if combinations == {}
+  def to_s
+    return "No possible combinations add up to #{@target}" if combinations.length == 0
+
+    print_string = ""
     combinations.each_with_index do |combo, i|
-      puts "Combination ##{i + 1}:"
-      count_items(combo).each { |item, count| puts "  #{count} #{item}" }
+      print_string << "Combination ##{i + 1}:\n"
+      count_items(combo).each { |item, count| print_string << "  #{count} #{item}\n" }
     end
+    print_string
   end
 
   def get_sums
@@ -76,7 +79,6 @@ class Knapsack
     end
   end
 
-
   def count_items(item_names)
     count = {}
     unique_items = item_names.uniq
@@ -86,9 +88,9 @@ class Knapsack
 
 end
 
-k = Knapsack.new('test_menus/menu1.txt')
+k = Knapsack.new('test_menus/menu5.txt')
 # p k.sums
 # p k.target
-p k.combinations.length
-p k.combinations
-k.print_combinations
+# p k.combinations.length
+# p k.combinations
+puts k
