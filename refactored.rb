@@ -55,6 +55,8 @@ class Knapsack
   end
 
   def get_combinations
+    return [] if @target <= 0
+
     values = @items.map(&:price)
     min_value = values.min
     max_count = (@target / min_value).to_i
