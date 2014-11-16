@@ -65,7 +65,9 @@ class Knapsack
 
     (1..max_count).each do |n|
       @items.repeated_combination(n).each do |combo|
-        combinations << combo if sum(combo) == @target
+        sum = sum(combo)
+        next if sum > @target
+        combinations << combo if sum == @target
       end
     end
 
@@ -84,12 +86,14 @@ end
 
 test_menus = Dir.entries('test_menus').select { |f| !File.directory? f }
 test_menus.each do |name|
-  # unless name == 'menu3.txt'
+  unless name == 'menu3.txt'
     puts "---------------------------"
     puts "#{name}:"
     k = Knapsack.new("test_menus/#{name}")
+    start_time = Time.now
     puts k
-    p k.combinations
-    p k.counts
-  # end
+    puts "Finished #{name} in #{Time.now - start_time}"
+    # p k.combinations
+    # p k.counts
+  end
 end
