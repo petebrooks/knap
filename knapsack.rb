@@ -1,42 +1,33 @@
-require "pry"
-
 Item = Struct.new(:name, :price)
 
 class Knapsack
-  attr_reader :combinations
 
   def initialize(filename)
-    @combinations = []
     get_values(filename)
-    get_combinations
+  end
+
+  def combinations
+    @combinations ||= get_combinations
+  end
+
+  def counts
+    @counts ||= combinations.map { |combo| get_counts(combo) }
   end
 
   def to_s
-    return "No possible combinations add up to #{@target}" if @combinations.length == 0
+    return "No possible combinations add up to #{@target}" if combinations.length == 0
 
     print_string = ""
 
-    @combinations.each_with_index do |combo, i|
+    counts.each_with_index do |count, i|
       print_string << "Combination ##{i + 1}:\n"
-      count_items(combo).each { |item, count| print_string << "   #{count} #{item.name}\n" }
+      count.each { |item, count| print_string << "   #{count} #{item.name}\n" }
     end
 
     print_string
   end
 
   private
-
-  def get_combinations
-    values = @items.map(&:price)
-    min_value = values.min
-    max_count = (@target / min_value).to_i
-
-    (1..max_count).each do |n|
-      @items.repeated_combination(n).each do |combo|
-        combinations << combo if sum(combo) == @target
-      end
-    end
-  end
 
   def extract_digits(str)
     str[/\d+\.\d+/].to_f
@@ -63,9 +54,27 @@ class Knapsack
     end
   end
 
-  def count_items(item_names)
+  def get_combinations
+    return [] if @target <= 0
+
+    values = @items.map(&:price)
+    min_value = values.min
+    max_count = (@target / min_value).to_i
+
+    combinations = []
+
+    (1..max_count).each do |n|
+      @items.repeated_combination(n).each do |combo|
+        combinations << combo if sum(combo) == @target
+      end
+    end
+
+    combinations
+  end
+
+  def get_counts(combo)
     count = {}
-    item_names.each do |name|
+    combo.each do |name|
       count[name] ? count[name] += 1 : count[name] = 1
     end
     count
@@ -75,16 +84,12 @@ end
 
 test_menus = Dir.entries('test_menus').select { |f| !File.directory? f }
 test_menus.each do |name|
-  unless name == 'menu3.txt'
+  # unless name == 'menu3.txt'
     puts "---------------------------"
     puts "#{name}:"
     k = Knapsack.new("test_menus/#{name}")
     puts k
     p k.combinations
-  end
+    p k.counts
+  # end
 end
-
-# k = Knapsack.new('test_menus/menu5.txt')
-# p k.sums
-# p k.combinations
-# puts k
