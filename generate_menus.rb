@@ -1,5 +1,11 @@
 require "faker"
 
+Item = Struct.new(:name, :price) do
+  def to_s
+    "#{name},$#{price}"
+  end
+end
+
 def random_price(dollar_max=50, dollar_min=0.5)
   # "#{rand(dollar_max)}.#{rand(10)}#{rand(10)}".to_f
   rand(dollar_min.to_f..dollar_max.to_f).round(2)
@@ -14,20 +20,23 @@ def make_item(price)
 end
 
 def random_name(length=nil)
-  return Faker::Lorem.word if length == nil
-  raise ArgumentError('Length argument must be an integer') unless length.is_a?(Integer)
-  name = ""
-  length.times { name << [*'A'..'z'].sample }
-  name
+  Faker::Lorem.word
 end
 
-def random_target(max_price=100)
-  random_price(max_price)
+# def random_target(max_price=100)
+#   random_price(max_price)
+# end
+
+def make_target_price(item_prices)
+  sample_size = rand(1..item_prices.length)
+  sample_items = item_prices.sample(sample_size)
+  p sample_items
+  sample_items.inject(:+).round(2)
 end
 
-def random_item(name_length=6, max_price=50)
-  "#{random_name(name_length)},#{random_price(max_price)}"
-end
+# def random_item(name_length=6, max_price=50)
+#   "#{random_name(name_length)},#{random_price(max_price)}"
+# end
 
 def generate_menus(options={})
   file_nums = options.fetch(:file_nums, (4..6))
@@ -51,18 +60,17 @@ end
 # end
 
 def generate_single_menu(options={})
-  file_name = options.fetch(:file_name, 'menu')
-  num_items = options.fetch(:num_items, 50)
-  max_target_price = options.fetch(:max_target_price, 100)
-  max_item_price = options.fetch(:max_item_price, 50)
-  # item_name_length = options.fetch(:item_name_length, 6)
-  guarantee_solveable = options.fetch(:guarantee_solveable, false)
+  file_name           = options[:file_name] || 'generated_menu'
+  num_items           = options[:num_items] || 50
+  max_target_price    = options[:max_target_price] || 100
+  max_item_price      = options[:max_item_price] || 50
+  guarantee_solveable = options[:guarantee_solveable] || false
 
   item_prices = Array.new(num_items) { random_price(max_item_price) }
-  target_price = if guarantee_solveable
-    item_prices.sample(rand(1..num_items)).inject(:+)
+  if guarantee_solveable
+    target_price = make_target_price(item_prices)
   else
-    random_price(max_target_price)
+    target_price = random_price(max_target_price)
   end
 
   target = make_price_string(target_price)
