@@ -7,7 +7,7 @@ TestItem = Struct.new(:name, :price) do
 end
 
 class Menu
-  attr_reader :target_price
+  attr_reader :target_price, :file_path
 
   def initialize(options={})
     file_name            = options[:file_name] || 'generated_menu'
@@ -18,11 +18,6 @@ class Menu
     @guarantee_solveable = options[:guarantee_solveable] || false
 
     @items = Array.new(@num_items) { make_item }
-  end
-
-  def file_path
-    generate_file
-    @file_path
   end
 
   def generate_file
@@ -69,7 +64,7 @@ class Menu
 
 end
 
-# menu_options = { guarantee_solveable: true, file_name: 'solveable_menu' }
-# solveable_menu = Menu.new(menu_options)
-# solveable_menu.generate_file
+menu_options = { guarantee_solveable: true, file_name: 'solveable_menu' }
+solveable_menu = Menu.new(menu_options)
+solveable_menu.generate_file
 # p solveable_menu.file_path

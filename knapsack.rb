@@ -3,7 +3,6 @@ Item = Struct.new(:name, :price)
 class Knapsack
 
   def initialize(filename)
-    p filename
     get_values(filename)
   end
 
@@ -61,7 +60,7 @@ class Knapsack
     values = @items.map(&:price)
     min_value = values.min
     max_count = (@target / min_value).to_i
-
+"Combination #1:\n   1 mixed fruit\n   2 hot wings\n   1 sampler plate\nCombination #2:\n   7 mixed fruit\n"
     combinations = []
 
     (1..max_count).each do |n|
@@ -101,5 +100,10 @@ end
 #   end
 # end
 
-# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/solveable_menu.txt")
-# p k.combinations
+# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/menu3.txt")
+# puts "-----------------------------"
+# p k.combinations.length
+# puts "-----------------------------"
+# p k.counts.length
+# puts "-----------------------------"
+# p k.to_s
