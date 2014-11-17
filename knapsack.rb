@@ -3,6 +3,7 @@ Item = Struct.new(:name, :price)
 class Knapsack
 
   def initialize(filename, verbose=false)
+    raise ArgumentError, 'Argument must be a valid filename' unless File.file?(filename)
     @verbose = verbose
     get_values(filename)
   end
@@ -62,7 +63,6 @@ class Knapsack
     values = @items.map(&:price)
     min_value = values.min
     max_count = (@target / min_value).to_i
-
     combinations = []
 
     verbose_say('Finding possible combinations...')
@@ -107,5 +107,10 @@ end
 #   end
 # end
 
-# k = Knapsack.new("spec/test_menus/solveable_menu.txt")
-# p k.combinations
+# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/menu3.txt")
+# puts "-----------------------------"
+# p k.combinations.length
+# puts "-----------------------------"
+# p k.counts.length
+# puts "-----------------------------"
+# p k.to_s
