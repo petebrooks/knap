@@ -47,4 +47,10 @@ describe Knapsack do
     end
   end
 
+  describe '#initialize' do
+    it 'raises an error if not initialized with a filename' do
+      expect{Knapsack.new('@r$sj')}.to raise_error(ArgumentError)
+    end
+  end
+
 end

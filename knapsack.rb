@@ -3,6 +3,7 @@ Item = Struct.new(:name, :price)
 class Knapsack
 
   def initialize(filename)
+    raise ArgumentError, 'Argument must be a valid filename' unless File.file?(filename)
     get_values(filename)
   end
 
@@ -60,7 +61,6 @@ class Knapsack
     values = @items.map(&:price)
     min_value = values.min
     max_count = (@target / min_value).to_i
-"Combination #1:\n   1 mixed fruit\n   2 hot wings\n   1 sampler plate\nCombination #2:\n   7 mixed fruit\n"
     combinations = []
 
     (1..max_count).each do |n|
