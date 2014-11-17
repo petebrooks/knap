@@ -68,11 +68,14 @@ class Knapsack
     verbose_say('Finding possible combinations...')
     start_time = Time.now
     (1..max_count).each do |n|
+      start_n = Time.now
+      verbose_say("Finding combinations of size #{n}")
       @items.repeated_combination(n).each do |combo|
         combinations << combo if sum(combo) == @target
       end
+      verbose_say("   -- Completed in #{Time.now - start_time}")
     end
-    verbose_say("   -- Completed in #{Time.now - start_time}")
+    verbose_say(" -- Completed all combinations in #{Time.now - start_time}")
 
     combinations
   end

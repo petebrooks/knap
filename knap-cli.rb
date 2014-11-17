@@ -9,8 +9,10 @@ class Knap < Thor
     `knap load`
   LONG_DESC
   def load(filename)
+    start_time = Time.now
     @knapsack = Knapsack.new(filename, options[:verbose])
     puts @knapsack
+    log("Completed solution in #{Time.now - start_time}")
   end
 
   no_commands do
