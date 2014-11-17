@@ -2,8 +2,8 @@ Item = Struct.new(:name, :price)
 
 class Knapsack
 
-  def initialize(filename)
-    p filename
+  def initialize(filename, verbose=false)
+    @verbose = verbose
     get_values(filename)
   end
 
@@ -50,6 +50,7 @@ class Knapsack
 
   def get_values(filename)
     file = File.open(filename, 'r')
+    verbose_say('Parsing file...')
     file.readlines.each_with_index do |line, i|
       i == 0 ? set_target(line) : add_item(line)
     end
@@ -64,13 +65,14 @@ class Knapsack
 
     combinations = []
 
+    verbose_say('Finding possible combinations...')
+    start_time = Time.now
     (1..max_count).each do |n|
       @items.repeated_combination(n).each do |combo|
-        sum = sum(combo)
-        next if sum > @target
-        combinations << combo if sum == @target
+        combinations << combo if sum(combo) == @target
       end
     end
+    verbose_say("   -- Completed in #{Time.now - start_time}")
 
     combinations
   end
@@ -83,11 +85,15 @@ class Knapsack
     count
   end
 
+  def verbose_say(string)
+    puts string if @verbose
+  end
+
 end
 
 # DRIVER TEST CODE
 
-# test_menus = Dir.entries('test_menus').select { |f| !File.directory? f }
+# test_menus = Dir.entries('spec/test_menus').select { |f| !File.directory? f }
 # test_menus.each do |name|
 #   unless name == 'menu3.txt'
 #     puts "---------------------------"
@@ -101,5 +107,5 @@ end
 #   end
 # end
 
-# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/solveable_menu.txt")
+# k = Knapsack.new("spec/test_menus/solveable_menu.txt")
 # p k.combinations
