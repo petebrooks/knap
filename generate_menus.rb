@@ -1,10 +1,10 @@
 require "faker"
 
-Item = Struct.new(:name, :price) do
-  def to_s
-    "#{name},$#{price}"
-  end
-end
+# Item = Struct.new(:name, :price) do
+#   def to_s
+#     "#{name},$#{price}"
+#   end
+# end
 
 def random_price(dollar_max=50, dollar_min=0.5)
   # "#{rand(dollar_max)}.#{rand(10)}#{rand(10)}".to_f

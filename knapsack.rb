@@ -3,6 +3,7 @@ Item = Struct.new(:name, :price)
 class Knapsack
 
   def initialize(filename)
+    p filename
     get_values(filename)
   end
 
@@ -84,16 +85,21 @@ class Knapsack
 
 end
 
-test_menus = Dir.entries('test_menus').select { |f| !File.directory? f }
-test_menus.each do |name|
-  unless name == 'menu3.txt'
-    puts "---------------------------"
-    puts "#{name}:"
-    k = Knapsack.new("test_menus/#{name}")
-    start_time = Time.now
-    puts k
-    puts "Finished #{name} in #{Time.now - start_time}"
-    # p k.combinations
-    # p k.counts
-  end
-end
+# DRIVER TEST CODE
+
+# test_menus = Dir.entries('test_menus').select { |f| !File.directory? f }
+# test_menus.each do |name|
+#   unless name == 'menu3.txt'
+#     puts "---------------------------"
+#     puts "#{name}:"
+#     k = Knapsack.new("test_menus/#{name}")
+#     start_time = Time.now
+#     puts k
+#     puts "Finished #{name} in #{Time.now - start_time}"
+#     # p k.combinations
+#     # p k.counts
+#   end
+# end
+
+# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/solveable_menu.txt")
+# p k.combinations
