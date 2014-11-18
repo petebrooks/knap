@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative 'knapsack'
+require_relative '../knapsack'
 
 describe Knapsack do
   let(:easy_knapsack) { Knapsack.new('test_menus/menu1.txt') }
