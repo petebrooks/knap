@@ -1,11 +1,16 @@
 require 'rspec'
+require 'active_support/core_ext/kernel/reporting'
 require_relative '../knapsack'
 
 describe Knapsack do
-  let(:easy_knapsack) { Knapsack.new('test_menus/menu1.txt') }
-  let(:equal_knapsack) { Knapsack.new('test_menus/menu3.txt') }
+  let(:easy_knapsack) { Knapsack.new('test_menus/easy_menu.txt') }
+  let(:equal_knapsack) { Knapsack.new('test_menus/equal_menu.txt') }
   let(:solveable_knapsack) { Knapsack.new('test_menus/solveable_menu.txt') }
-  let(:impossible_knapsack) { Knapsack.new('test_menus/menu2.txt') }
+  let(:impossible_knapsack) { Knapsack.new('test_menus/impossible_menu.txt') }
+  let(:long_knapsack) { Knapsack.new('test_menus/long_menu.txt') }
+  let(:no_target) { 'test_menus/no_target.txt' }
+  let(:bad_formatting) { 'test_menus/bad_formatting.txt' }
+  let(:zero_target) { 'test_menus/zero_target.txt' }
 
   describe '#combinations' do
     it 'finds a solution to an easy menu' do
@@ -18,6 +23,10 @@ describe Knapsack do
 
     it 'finds a solution to a random solveable menu' do
       expect(solveable_knapsack.combinations).not_to be_empty
+    end
+
+    it 'finds a solution to a long menu' do
+      expect(long_knapsack.combinations).not_to be_empty
     end
 
     it 'returns an empty array for an impossible menu' do
@@ -49,7 +58,26 @@ describe Knapsack do
 
   describe '#initialize' do
     it 'raises an error if not initialized with a filename' do
-      expect{Knapsack.new('@r$sj')}.to raise_error(ArgumentError)
+      expect{ Knapsack.new('@r$sj') }.to raise_error(ArgumentError)
+    end
+
+    it 'raises an error if target is unusable' do
+      expect{ Knapsack.new(:no_target) }.to raise_error
+    end
+
+    it 'raises an error if target equals 0' do
+      expect{ Knapsack.new(:zero_target) }.to raise_error
+    end
+
+    it 'alerts user when skipping a line due to bad formatting in verbose mode' do
+      output = capture(:stdout) do
+        Knapsack.new('test_menus/bad_formatting.txt', true)
+      end
+      expect(output).to include('Formatting error.  Skipping line:')
+    end
+
+    it 'does not raise an error due to bad line formatting' do
+      expect{ Knapsack.new('test_menus/bad_formatting.txt') }.not_to raise_error
     end
   end
 

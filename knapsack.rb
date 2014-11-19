@@ -32,17 +32,29 @@ class Knapsack
   private
 
   def extract_digits(str)
+    return nil unless str.is_a?(String)
     str[/\d+\.\d+/].to_f
   end
 
   def set_target(line)
     @target = extract_digits(line) || 0
+    raise "Could not set target price. Check formatting." if @target.nil?
+    raise "Target price must be greater than 0." if @target <= 0
   end
 
   def add_item(line)
     @items ||= []
-    name, price = line.split(',')
-    @items << Item.new(name, extract_digits(price))
+    name, price_string = line.split(',')
+    price = extract_digits(price_string)
+    if !name || !price
+      log("Formatting error.  Skipping line: '#{line}'")
+    elsif price <= 0
+      log("Item price is zero or negative.  Skipping line: '#{line}'")
+    elsif price > @target
+      log("Item price is greater than target price.  Skipping line: '#{line}'")
+    else
+      @items << Item.new(name, price)
+    end
   end
 
   def sum(a)
@@ -51,31 +63,31 @@ class Knapsack
 
   def get_values(filename)
     file = File.open(filename, 'r')
-    verbose_say('Parsing file...')
+    log('Parsing file...')
     file.readlines.each_with_index do |line, i|
       i == 0 ? set_target(line) : add_item(line)
     end
   end
 
   def get_combinations
-    return [] if @target <= 0
+    return [] if @target <= 0 || @items.empty?
 
     values = @items.map(&:price)
     min_value = values.min
     max_count = (@target / min_value).to_i
     combinations = []
 
-    verbose_say('Finding possible combinations...')
+    log('Finding possible combinations...')
     start_time = Time.now
     (1..max_count).each do |n|
       start_n = Time.now
-      verbose_say("Finding combinations of size #{n}")
+      log("Finding combinations of size #{n}")
       @items.repeated_combination(n).each do |combo|
         combinations << combo if sum(combo) == @target
       end
-      verbose_say("   -- Completed in #{Time.now - start_time}")
+      log("   -- Completed in #{Time.now - start_time}")
     end
-    verbose_say(" -- Completed all combinations in #{Time.now - start_time}")
+    log("Completed all combinations in #{Time.now - start_time}")
 
     combinations
   end
@@ -88,7 +100,7 @@ class Knapsack
     count
   end
 
-  def verbose_say(string)
+  def log(string)
     puts string if @verbose
   end
 
