@@ -6,6 +6,7 @@ describe Knapsack do
   let(:equal_knapsack) { Knapsack.new('test_menus/menu3.txt') }
   let(:solveable_knapsack) { Knapsack.new('test_menus/solveable_menu.txt') }
   let(:impossible_knapsack) { Knapsack.new('test_menus/menu2.txt') }
+  let(:no_target) { 'test_menus/no_target.txt' }
 
   describe '#combinations' do
     it 'finds a solution to an easy menu' do
@@ -49,7 +50,15 @@ describe Knapsack do
 
   describe '#initialize' do
     it 'raises an error if not initialized with a filename' do
-      expect{Knapsack.new('@r$sj')}.to raise_error(ArgumentError)
+      expect{ Knapsack.new('@r$sj') }.to raise_error(ArgumentError)
+    end
+
+    it 'raises an error if file formatting is unusable' do
+      expect{ Knapsack.new(:no_target) }.to raise_error()
+    end
+
+    it 'alerts user when skipping a line due to bad formatting' do
+      expect{ Knapsack.new(:bad_formatting) }.to raise_error()
     end
   end
 
