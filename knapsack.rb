@@ -72,20 +72,18 @@ class Knapsack
   def get_combinations
     return [] if @target <= 0 || @items.empty?
 
-    values = @items.map(&:price)
-    min_value = values.min
-    max_count = (@target / min_value).to_i
+    values       = @items.map(&:price)
+    min_value    = values.min
+    max_count    = (@target / min_value).to_i
     combinations = []
 
     log('Finding possible combinations...')
     start_time = Time.now
     (1..max_count).each do |n|
-      start_n = Time.now
       log("Finding combinations of size #{n}")
       @items.repeated_combination(n).each do |combo|
         combinations << combo if sum(combo) == @target
       end
-      log("   -- Completed in #{Time.now - start_time}")
     end
     log("Completed all combinations in #{Time.now - start_time}")
 
