@@ -23,9 +23,9 @@ class Knap < Thor
 
     [...]
   LONG_DESC
-  def load(filename)
+  def load(filepath)
     start_time = Time.now
-    knapsack = Knapsack.new(filename, options[:verbose])
+    knapsack = Knapsack.new(filepath, options[:verbose])
     puts knapsack if options[:to_s]
     p knapsack.combinations if options[:combinations]
     p knapsack.counts if options[:counts]
