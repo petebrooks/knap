@@ -43,8 +43,8 @@ class Knap < Thor
     time_report = []
     test_menus.each do |name|
       next if SKIP_MENUS.include?(name)
-      log "=" * 50
-      log "#{name}:"
+      say "=" * 50
+      say "#{name}:", color = [:blue, :on_white]
       start_time = Time.now
       load("spec/test_menus/#{name}")
       time_report << "Finished #{name} in #{Time.now - start_time}"
