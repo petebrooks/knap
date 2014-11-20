@@ -9,6 +9,8 @@ Ruby CLI for knapsack problem
 
 ### Menu Generator
 Includes CLI for generating test menus
+
 1. `cd spec`
 2. `thor menu_gen`
+
 All test files are saved in spec/test_menus
