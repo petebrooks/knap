@@ -2,6 +2,8 @@ require 'thor'
 require_relative 'knapsack'
 
 class Knap < Thor
+  SKIP_MENUS = ['no_target.txt', 'zero_target.txt', 'equal_menu.txt']
+
   class_option :counts, :type => :boolean, :default => false
   class_option :combinations, :type => :boolean, :default => false
   class_option :to_s, :type => :boolean, :default => true
@@ -31,6 +33,7 @@ class Knap < Thor
     end
     time_report = []
     test_menus.each do |name|
+      next if SKIP_MENUS.include?(name)
       log "=" * 50
       log "#{name}:"
       start_time = Time.now
