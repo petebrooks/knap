@@ -1,7 +1,8 @@
 # Knap
-## Ruby CLI for knapsack problem
+Ruby CLI for knapsack problem
 
 ### Install
-1. `git clone <URL>`
-2. `cd knap`
-3. `ruby knap-cli.rb help` || `ruby knap-cli.rb run <FILE_NAME>`
+1. `gem install thor`
+2. `git clone <URL>`
+3. `cd knap`
+4. `thor knap load <FILE_NAME>` || `thor knap help` || `thor knap test`
