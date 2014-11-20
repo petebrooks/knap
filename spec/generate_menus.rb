@@ -30,6 +30,7 @@ class Menu
     target = make_price_string(@target_price)
 
     f = File.new("#{@file_path}", "w")
+    f.puts target
     @items.each { |item| f.puts item }
 
     [@file_path, @target_price]

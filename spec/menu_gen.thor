@@ -7,12 +7,12 @@ class MenuGen < Thor
   def generate
     say 'Generate Test Menu', color = [:black, :on_white]
     say 'Files will be saved to test_menus directory'
-
-    options[:file_name] = demand('File name:') unless options[:file_name]
-    options[:num_items] = demand('Number of items:')
-    options[:guarantee_solveable] = yes?('Guarantee solveable?')
-    options[:max_target_price] = demand('Maximum target price:') unless options[:guarantee_solveable]
-    options[:max_item_price] = demand('Maximum item price:')
+    gen_options = {}
+    gen_options[:file_name] = options[:file_name] || demand('File name:')
+    gen_options[:num_items] = demand('Number of items:')
+    gen_options[:guarantee_solveable] = yes?('Guarantee solveable?')
+    gen_options[:max_target_price] = demand('Maximum target price:') unless gen_options[:guarantee_solveable]
+    gen_options[:max_item_price] = demand('Maximum item price:')
 
     menu = Menu.new(gen_options)
     file_path, target_price = menu.generate_file
