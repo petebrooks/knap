@@ -22,7 +22,7 @@ class Menu
 
   def generate_file
     if @guarantee_solveable
-      @target_price = make_target_price(@max_target_price)
+      @target_price = make_target_price
     else
       @target_price = random_price(@max_target_price)
     end
@@ -32,6 +32,8 @@ class Menu
     f = File.new("#{@file_path}", "w")
     f.puts target
     @items.each { |item| f.puts item }
+
+    [@file_path, @target_price]
   end
 
   private
@@ -64,7 +66,7 @@ class Menu
 
 end
 
-menu_options = { guarantee_solveable: true, file_name: 'long_menu', num_items: 10, max_target_price: 60, max_item_price: 50 }
-solveable_menu = Menu.new(menu_options)
-solveable_menu.generate_file
-p solveable_menu.file_path
+# menu_options = { guarantee_solveable: true, file_name: 'long_menu', num_items: 10, max_target_price: 60, max_item_price: 50 }
+# solveable_menu = Menu.new(menu_options)
+# solveable_menu.generate_file
+# p solveable_menu.file_path
