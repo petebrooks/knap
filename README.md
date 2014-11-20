@@ -1,6 +1,6 @@
-Knap: Ruby CLI for knapsack problem
+# Knap: Ruby CLI for knapsack problem
 
-## Install
+### Install
 - Clone directory
 - `cd knap`
 - `ruby knap-cli.rb help`
