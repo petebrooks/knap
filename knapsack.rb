@@ -19,14 +19,14 @@ class Knapsack
   def to_s
     return "No possible combinations add up to #{@target}" if combinations.length == 0
 
-    print_string = ""
+    print_string = []
 
     counts.each_with_index do |count, i|
-      print_string << "Combination ##{i + 1}:\n"
-      count.each { |item, count| print_string << "   #{count} #{item.name}\n" }
+      print_string << "Combination ##{i + 1}:"
+      print_string << count.map { |item, count| "   #{count} #{item.name}" }
     end
 
-    print_string
+    print_string.join("\n")
   end
 
   private
@@ -47,11 +47,11 @@ class Knapsack
     name, price_string = line.split(',')
     price = extract_digits(price_string)
     if !name || !price
-      log("Formatting error.  Skipping line: '#{line}'")
+      log("Formatting error. Skipping line: '#{line}'")
     elsif price <= 0
-      log("Item price is zero or negative.  Skipping line: '#{line}'")
+      log("Item price is zero or negative. Skipping line: '#{line}'")
     elsif price > @target
-      log("Item price is greater than target price.  Skipping line: '#{line}'")
+      log("Item price is greater than target price. Skipping line: '#{line}'")
     else
       @items << Item.new(name, price)
     end
@@ -72,20 +72,16 @@ class Knapsack
   def get_combinations
     return [] if @target <= 0 || @items.empty?
 
-    values = @items.map(&:price)
-    min_value = values.min
-    max_count = (@target / min_value).to_i
+    values       = @items.map(&:price)
+    min_value    = values.min
+    max_count    = (@target / min_value).to_i
     combinations = []
 
-    log('Finding possible combinations...')
     start_time = Time.now
     (1..max_count).each do |n|
-      start_n = Time.now
-      log("Finding combinations of size #{n}")
       @items.repeated_combination(n).each do |combo|
         combinations << combo if sum(combo) == @target
       end
-      log("   -- Completed in #{Time.now - start_time}")
     end
     log("Completed all combinations in #{Time.now - start_time}")
 
@@ -100,8 +96,8 @@ class Knapsack
     count
   end
 
-  def log(string)
-    puts string if @verbose
+  def log(message)
+    puts message if @verbose
   end
 
 end
