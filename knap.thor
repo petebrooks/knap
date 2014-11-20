@@ -4,15 +4,15 @@ require_relative 'knapsack'
 class Knap < Thor
   SKIP_MENUS = ['no_target.txt', 'zero_target.txt', 'equal_menu.txt']
 
+  class_option :verbose, :type => :boolean, :default => false, :aliases => ['-v']
   class_option :counts, :type => :boolean, :default => false
   class_option :combinations, :type => :boolean, :default => false
   class_option :to_s, :type => :boolean, :default => true
 
-  desc 'load FILE_PATH', 'Returns optimization.'
+  desc 'load FILE_PATH', 'Returns optimization'
   long_desc <<-LONG_DESC
     `knap load`
   LONG_DESC
-  method_option :verbose, :type => :boolean, :default => false
   def load(filename)
     start_time = Time.now
     knapsack = Knapsack.new(filename, options[:verbose])
@@ -24,7 +24,6 @@ class Knap < Thor
 
   desc 'test', 'run test files'
   method_option :run, :type => :string, :options => ['easy', 'all'], :default => 'all'
-  method_option :verbose, :type => :boolean, :default => true
   def test
     if options[:run] == 'all'
       test_menus = Dir.entries('spec/test_menus').select { |f| !File.directory? f }
