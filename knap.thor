@@ -5,6 +5,7 @@ class Knap < Thor
   SKIP_MENUS = ['no_target.txt', 'zero_target.txt', 'equal_menu.txt']
 
   class_option :verbose, :type => :boolean, :default => false, :aliases => ['-v']
+  class_option :repeat, :type => :boolean, :default => true, :aliases => ['-r']
   class_option :counts, :type => :boolean, :default => false
   class_option :combinations, :type => :boolean, :default => false
   class_option :to_s, :type => :boolean, :default => true
@@ -25,7 +26,7 @@ class Knap < Thor
   LONG_DESC
   def load(filepath)
     start_time = Time.now
-    knapsack = Knapsack.new(filepath, options[:verbose])
+    knapsack = Knapsack.new(filepath, { verbose: options[:verbose], repeat: options[:repeat] })
     puts knapsack if options[:to_s]
     p knapsack.combinations if options[:combinations]
     p knapsack.counts if options[:counts]

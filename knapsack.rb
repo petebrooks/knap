@@ -2,9 +2,10 @@ Item = Struct.new(:name, :price)
 
 class Knapsack
 
-  def initialize(filename, verbose=false)
+  def initialize(filename, options = {})
     raise ArgumentError, 'Argument must be a valid filename' unless File.file?(filename)
-    @verbose = verbose
+    @verbose = options[:verbose] || false
+    @repeat = options[:repeat] || true
     get_values(filename)
   end
 
