@@ -30,7 +30,6 @@ class Menu
     target = make_price_string(@target_price)
 
     f = File.new("#{@file_path}", "w")
-    f.puts target
     @items.each { |item| f.puts item }
 
     [@file_path, @target_price]
@@ -60,13 +59,7 @@ class Menu
     item_prices = @items.map(&:price)
     sample_size = rand(1..item_prices.length)
     sample_items = item_prices.sample(sample_size)
-    # p sample_items
     sample_items.inject(:+).round(2)
   end
 
 end
-
-# menu_options = { guarantee_solveable: true, file_name: 'long_menu', num_items: 10, max_target_price: 60, max_item_price: 50 }
-# solveable_menu = Menu.new(menu_options)
-# solveable_menu.generate_file
-# p solveable_menu.file_path

@@ -101,27 +101,3 @@ class Knapsack
   end
 
 end
-
-# DRIVER TEST CODE
-
-# test_menus = Dir.entries('spec/test_menus').select { |f| !File.directory? f }
-# test_menus.each do |name|
-#   unless name == 'menu3.txt'
-#     puts "---------------------------"
-#     puts "#{name}:"
-#     k = Knapsack.new("test_menus/#{name}")
-#     start_time = Time.now
-#     puts k
-#     puts "Finished #{name} in #{Time.now - start_time}"
-#     # p k.combinations
-#     # p k.counts
-#   end
-# end
-
-# k = Knapsack.new("/Users/petebrooks/code/knap/test_menus/menu3.txt")
-# puts "-----------------------------"
-# p k.combinations.length
-# puts "-----------------------------"
-# p k.counts.length
-# puts "-----------------------------"
-# p k.to_s
