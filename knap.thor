@@ -11,7 +11,17 @@ class Knap < Thor
 
   desc 'load FILE_PATH', 'Returns optimization'
   long_desc <<-LONG_DESC
-    `knap load`
+    Loads and parses a file containing menu items and a target price.
+
+    Expects file in this format:
+
+    [target price]
+
+    [item name],[item price]
+
+    [item name],[item price]
+
+    [...]
   LONG_DESC
   def load(filename)
     start_time = Time.now
