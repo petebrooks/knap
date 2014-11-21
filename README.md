@@ -5,7 +5,25 @@ Ruby CLI for knapsack problem
 1. `gem install thor`
 2. `git clone <URL>`
 3. `cd knap`
-4. `thor knap load <FILE_NAME>` || `thor knap help` || `thor knap test`
+
+### CLI Usage
+
+##### Load a text file and print result:
+`thor knap load <FILE_NAME>`  
+options:  
+`-v` || `--verbose` (default: false)  
+`--combinations` (default: false)  
+`--counts` (default: false)  
+`--to_s` (default: true)  
+
+##### Run all test files:
+`thor knap test`  
+options:  
+`-v` || `--verbose` (default: false)  
+
+##### Help menu:
+`thor knap help`
+
 
 ### Menu Generator
 Includes CLI for generating test menus
