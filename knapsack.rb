@@ -37,7 +37,7 @@ class Knapsack
   end
 
   def set_target(line)
-    @target = extract_digits(line) || 0
+    @target = extract_digits(line)
     raise "Could not set target price. Check formatting." if @target.nil?
     raise "Target price must be greater than 0." if @target <= 0
   end
@@ -89,9 +89,9 @@ class Knapsack
   end
 
   def get_counts(combo)
-    count = {}
+    count = Hash.new(0)
     combo.each do |name|
-      count[name] ? count[name] += 1 : count[name] = 1
+      count[name] += 1
     end
     count
   end
